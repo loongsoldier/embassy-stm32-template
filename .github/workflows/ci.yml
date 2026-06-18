@@ -20,13 +20,13 @@ jobs:
       - name: Validate TOML files
         run: |
           echo "==> Cargo.toml"
-          python3 -c "import tomllib; tomllib.load(open('Cargo.toml'))" && echo "  OK"
+          python3 -c "import tomllib; tomllib.load(open('Cargo.toml', 'rb'))" && echo "  OK"
           echo "==> cargo-generate.toml"
-          python3 -c "import tomllib; tomllib.load(open('cargo-generate.toml'))" && echo "  OK"
+          python3 -c "import tomllib; tomllib.load(open('cargo-generate.toml', 'rb'))" && echo "  OK"
           echo "==> .cargo/config.toml"
-          python3 -c "import tomllib; tomllib.load(open('.cargo/config.toml'))" && echo "  OK"
+          python3 -c "import tomllib; tomllib.load(open('.cargo/config.toml', 'rb'))" && echo "  OK"
           echo "==> rust-toolchain.toml"
-          python3 -c "import tomllib; tomllib.load(open('rust-toolchain.toml'))" && echo "  OK"
+          python3 -c "import tomllib; tomllib.load(open('rust-toolchain.toml', 'rb'))" && echo "  OK"
 
       - name: Validate Rhai pre-script syntax
         run: |
@@ -46,11 +46,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { name: M3,   chip: stm32f103c8,  target: thumbv7m-none-eabi }
-          - { name: M4,   chip: stm32f401rc,  target: thumbv7em-none-eabihf }
-          - { name: M7,   chip: stm32h743zi,  target: thumbv7em-none-eabihf }
-          - { name: M0+,  chip: stm32g071rb,  target: thumbv6m-none-eabi }
-          - { name: M33,  chip: stm32h563zi,  target: thumbv8m.main-none-eabihf }
+          - { name: M3, chip: stm32f103c8, target: thumbv7m-none-eabi }
+          - { name: M4, chip: stm32f401rc, target: thumbv7em-none-eabihf }
+          - { name: M7, chip: stm32h743zi, target: thumbv7em-none-eabihf }
+          - { name: M0+, chip: stm32g071rb, target: thumbv6m-none-eabi }
+          - { name: M33, chip: stm32h563zi, target: thumbv8m.main-none-eabihf }
     steps:
       - uses: actions/checkout@v4
 
@@ -60,7 +60,7 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Install cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.22
+        run: cargo install cargo-generate --locked
 
       - name: Generate project
         run: |
