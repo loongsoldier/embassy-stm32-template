@@ -49,7 +49,7 @@ jobs:
           - { name: M3, chip: stm32f103c8, target: thumbv7m-none-eabi }
           - { name: M4, chip: stm32f401rc, target: thumbv7em-none-eabihf }
           - { name: M7, chip: stm32h743zi, target: thumbv7em-none-eabihf }
-          - { name: M0+, chip: stm32g071rb, target: thumbv6m-none-eabi }
+          - { name: M0P, chip: stm32g071rb, target: thumbv6m-none-eabi }
           - { name: M33, chip: stm32h563zi, target: thumbv8m.main-none-eabihf }
     steps:
       - uses: actions/checkout@v4
@@ -68,8 +68,7 @@ jobs:
             --name ci-test-${{ matrix.name }} \
             --define chip=${{ matrix.chip }} \
             --vcs none \
-            --destination /tmp \
-            --silent
+            --destination /tmp
 
       - name: cargo check
         run: cd /tmp/ci-test-${{ matrix.name }} && cargo check
