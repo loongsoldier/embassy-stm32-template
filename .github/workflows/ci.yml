@@ -60,7 +60,9 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Install cargo-generate
-        run: cargo install cargo-generate --locked
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-generate
 
       - name: Generate project
         run: |
