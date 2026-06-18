@@ -67,10 +67,9 @@ jobs:
       - name: Generate project
         run: |
           cargo generate --path . \
-            --name ci-test-${{ matrix.name }} \
+            --name ci-test \
             --define chip=${{ matrix.chip }} \
-            --vcs none \
-            --destination /tmp
+            --vcs none
 
       - name: cargo check
-        run: cd /tmp/ci-test-${{ matrix.name }} && cargo check
+        run: cd ci-test && cargo check
