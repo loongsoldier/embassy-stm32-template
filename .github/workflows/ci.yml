@@ -62,7 +62,7 @@ jobs:
       - name: Install cargo-generate
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-generate@0.21.0
+          tool: cargo-generate
 
       - name: Generate project
         run: |
