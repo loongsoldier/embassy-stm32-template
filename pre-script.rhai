@@ -42,19 +42,6 @@ for prefix in target_by_prefix.keys() {
     }
 }
 
-// ── Cortex-M critical section ──────────────────────────────────────────
-// Dual-core chips (H745/H747/H755/H757 with -cm4/-cm7 suffix) need HSEM
-// based synchronization, so skip the single-core impl.
-let is_dual_core = chip.contains("-cm");
-let cortex_m_feature = if is_dual_core {
-    // User must configure their own critical section (e.g. HSEM)
-    // or use embassy-executor's built-in ThreadModeRawMutex.
-    ""
-} else {
-    `"critical-section-single-core"`
-};
-
 // ── Set template variables ──────────────────────────────────────────────
 variable::set("rust_target", rust_target);
 variable::set("probe_chip", chip_upper);
-variable::set("cortex_m_feature", cortex_m_feature);

@@ -22,7 +22,7 @@ embedded-io = "0.7"
 embedded-io-async = "0.7"
 embedded-storage = "0.3.1"
 cortex-m-rt = "0.7.5"
-cortex-m = { version = "0.7.7", features = [{{ cortex_m_feature }}] }
+cortex-m = { version = "0.7.7", features = ["critical-section-single-core"] }
 
 embassy-executor = { version = "0.10", features = ["platform-cortex-m", "executor-thread", "defmt", "executor-interrupt"] }
 embassy-sync = { version = "0.8" }
