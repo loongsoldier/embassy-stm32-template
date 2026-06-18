@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Verify all chips in cargo-generate.toml are valid embassy-stm32 v0.6 features."""
+
 import json
 import re
 import sys
@@ -36,7 +37,7 @@ def main():
         sys.exit(0)
 
     with open("cargo-generate.toml") as f:
-        toml_chips = set(re.findall(r'"([a-z0-9]+)"', f.read()))
+        toml_chips = set(re.findall(r'"([a-z0-9-]+)"', f.read()))
 
     # Only compare STM32 chips in choices
     stm32_in_toml = {c for c in toml_chips if c.startswith("stm32")}
@@ -64,7 +65,9 @@ def main():
         # Dual-core WL variants are intentionally skipped
         dual_core_skipped = [c for c in missing if c.startswith("stm32wl5")]
         if dual_core_skipped:
-            print(f"  Note: {len(dual_core_skipped)} WL dual-core chips intentionally skipped")
+            print(
+                f"  Note: {len(dual_core_skipped)} WL dual-core chips intentionally skipped"
+            )
         sys.exit(1)
     else:
         print(f"\n  Result: OK (all {len(stm32_in_toml)} chips valid)")
