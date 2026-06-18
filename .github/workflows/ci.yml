@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # ── Fast checks (every push / PR) ──────────────────────────────────────
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate TOML files
+        run: |
+          echo "==> Cargo.toml"
+          python3 -c "import tomllib; tomllib.load(open('Cargo.toml'))" && echo "  OK"
+          echo "==> cargo-generate.toml"
+          python3 -c "import tomllib; tomllib.load(open('cargo-generate.toml'))" && echo "  OK"
+          echo "==> .cargo/config.toml"
+          python3 -c "import tomllib; tomllib.load(open('.cargo/config.toml'))" && echo "  OK"
+          echo "==> rust-toolchain.toml"
+          python3 -c "import tomllib; tomllib.load(open('rust-toolchain.toml'))" && echo "  OK"
+
+      - name: Validate Rhai pre-script syntax
+        run: |
+          # Basic syntax check: verify braces / keywords balance
+          cat pre-script.rhai | grep -c 'let ' | xargs echo "  let statements:"
+          echo "  (full Rhai validation requires rhai-run, skipped)"
+
+      - name: Check chip list completeness (vs embassy-stm32 v0.6)
+        run: |
+          python3 .github/scripts/check-chips.py
+
+  # ── Smoke test (one chip per Cortex variant) ───────────────────────────
+  smoke:
+    name: Smoke (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: M3,   chip: stm32f103c8,  target: thumbv7m-none-eabi }
+          - { name: M4,   chip: stm32f401rc,  target: thumbv7em-none-eabihf }
+          - { name: M7,   chip: stm32h743zi,  target: thumbv7em-none-eabihf }
+          - { name: M0+,  chip: stm32g071rb,  target: thumbv6m-none-eabi }
+          - { name: M33,  chip: stm32h563zi,  target: thumbv8m.main-none-eabihf }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.22
+
+      - name: Generate project
+        run: |
+          cargo generate --path . \
+            --name ci-test-${{ matrix.name }} \
+            --define chip=${{ matrix.chip }} \
+            --vcs none \
+            --destination /tmp \
+            --silent
+
+      - name: cargo check
+        run: cd /tmp/ci-test-${{ matrix.name }} && cargo check

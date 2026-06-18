@@ -1,0 +1,11 @@
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+runner = "probe-rs run --chip {{ probe_chip }} --connect-under-reset"
+
+# Alternatively, use `cargo embed` for RTT logging:
+# runner = "probe-rs run --chip {{ probe_chip }}"
+
+[build]
+target = "{{ rust_target }}"
+
+[env]
+DEFMT_LOG = "info"
