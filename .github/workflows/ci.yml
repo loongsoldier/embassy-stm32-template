@@ -54,6 +54,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry/cache/
+            ~/.cargo/registry/index/
+            ~/.cargo/git/db/
+          key: cargo-registry-${{ matrix.target }}-${{ hashFiles('Cargo.toml') }}
+          restore-keys: |
+            cargo-registry-${{ matrix.target }}-
+            cargo-registry-
+
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -70,6 +82,14 @@ jobs:
             --name ci-test \
             --define chip=${{ matrix.chip }} \
             --vcs none
+
+      - name: Verify generated project
+        run: |
+          test -d ci-test || { echo "ERROR: cargo-generate did not create ci-test/"; exit 1; }
+          test -f ci-test/Cargo.toml || { echo "ERROR: Cargo.toml missing"; exit 1; }
+          # Ensure no {{ }} placeholders left unsubstituted
+          grep -n '{{' ci-test/Cargo.toml && { echo "ERROR: unsubstituted placeholder in generated Cargo.toml"; exit 1; }
+          echo "Generated project OK"
 
       - name: cargo check
         run: cd ci-test && cargo check
