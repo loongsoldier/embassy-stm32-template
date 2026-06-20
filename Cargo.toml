@@ -1,12 +1,10 @@
-[workspace]
-resolver = "2"
-
 [package]
 edition = "2024"
 name = "{{project-name}}"
 version = "0.1.0"
 authors = ["{{authors}}"]
 license = "MIT OR Apache-2.0"
+resolver = "2"
 
 [[bin]]
 name = "{{project-name}}"

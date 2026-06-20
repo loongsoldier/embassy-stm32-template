@@ -81,15 +81,15 @@ jobs:
           cargo generate --path . \
             --name ci-test \
             --define chip=${{ matrix.chip }} \
-            --vcs none
+            --vcs none \
+            --destination /tmp
 
       - name: Verify generated project
         run: |
-          test -d ci-test || { echo "ERROR: cargo-generate did not create ci-test/"; exit 1; }
-          test -f ci-test/Cargo.toml || { echo "ERROR: Cargo.toml missing"; exit 1; }
-          # Ensure no {{ }} placeholders left unsubstituted
-          grep -n '{{' ci-test/Cargo.toml && { echo "ERROR: unsubstituted placeholder in generated Cargo.toml"; exit 1; }
+          test -d /tmp/ci-test || { echo "ERROR: cargo-generate did not create /tmp/ci-test/"; exit 1; }
+          test -f /tmp/ci-test/Cargo.toml || { echo "ERROR: Cargo.toml missing"; exit 1; }
+          grep -n '{{' /tmp/ci-test/Cargo.toml && { echo "ERROR: unsubstituted placeholder"; exit 1; }
           echo "Generated project OK"
 
       - name: cargo check
-        run: cd ci-test && cargo check
+        run: cd /tmp/ci-test && cargo check
