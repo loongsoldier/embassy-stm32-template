@@ -11,7 +11,7 @@ cargo install just
 cargo install probe-rs --features cli
 
 # Generate project
-cargo generate loongsoldier/embassy-stm32-template
+cargo generate --git https://github.com/loongsoldier/embassy-stm32-template
 ```
 
 Choose your STM32 chip from the list, then:
