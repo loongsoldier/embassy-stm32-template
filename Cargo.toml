@@ -32,9 +32,11 @@ embassy-time = { version = "0.5", features = ["defmt", "defmt-timestamp-uptime"]
 embassy-stm32 = { version = "0.6", features = ["defmt", "{{ chip }}", "unstable-pac", "memory-x", "time-driver-any"] }
 
 [profile.release]
-debug = 2
+debug = 0
 lto = true
 opt-level = 'z'
 
 [profile.dev]
 debug = 2
+lto = true
+opt-level = 'z'

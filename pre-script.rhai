@@ -43,5 +43,5 @@ for prefix in target_by_prefix.keys() {
 }
 
 // ── Set template variables ──────────────────────────────────────────────
-variable::set("rust_target", rust_target);
-variable::set("probe_chip", chip_upper);
+variable::set("rust-target", rust_target);
+variable::set("probe-chip", chip_upper);

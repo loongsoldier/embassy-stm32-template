@@ -1,5 +1,5 @@
-mcu := "{{ probe_chip }}"
-target := "{{ rust_target }}"
+mcu := "{{ probe-chip }}"
+target := "{{ rust-target }}"
 name := "{{ project-name }}"
 
 elf := justfile_directory() / "target" / target / "debug" / name
