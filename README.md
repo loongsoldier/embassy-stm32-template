@@ -9,7 +9,6 @@ A [cargo-generate] template for quickly scaffolding embedded Rust projects with 
 cargo install cargo-generate
 cargo install just
 cargo install probe-rs --features cli
-cargo install flip-link
 
 # Optional: USB DFU flashing (no debug probe needed)
 cargo install cargo-dfu
@@ -36,14 +35,13 @@ A blinky project with everything wired up:
 | **Executor** | embassy-executor (thread mode) |
 | **HAL** | embassy-stm32 with `memory-x` auto-linking |
 | **Logging** | defmt + RTT (view with `probe-rs attach`) |
-| **Stack protect** | flip-link (stack overflow → HardFault) |
 | **Runner** | `cargo run` → `probe-rs run` |
 | **Testing** | embedded-test + probe-rs (target hardware) |
 | **Task runner** | `just run` / `just test` / `just bloat` / `just size` / `just erase` |
 
 ```
 my-project/
-├── .cargo/config.toml    # probe-rs / DFU runner, flip-link, build target
+├── .cargo/config.toml    # probe-rs / DFU runner, build target
 ├── Cargo.toml
 ├── build.rs              # linker scripts (bin + test targets)
 ├── justfile              # just build / run / test / size / bloat / erase
