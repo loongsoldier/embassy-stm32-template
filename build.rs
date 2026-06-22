@@ -7,10 +7,10 @@ fn main() {
     println!("cargo:rustc-link-arg-bins=-Tdefmt.x");
 
     // Test targets (tests/*.rs)
-    // embedded-test.x replaces link.x (provided by embedded-test-linker-script crate)
-    // memory.x provides MEMORY regions (needed by flip-link for test ELFs too)
+    // Same linker chain as bins: memory.x defines regions, link.x places sections.
+    // embedded-test.x is auto-added by embedded-test-linker-script for test metadata.
     println!("cargo:rustc-link-arg-tests=--nmagic");
     println!("cargo:rustc-link-arg-tests=-Tmemory.x");
-    println!("cargo:rustc-link-arg-tests=-Tembedded-test.x");
+    println!("cargo:rustc-link-arg-tests=-Tlink.x");
     println!("cargo:rustc-link-arg-tests=-Tdefmt.x");
 }
