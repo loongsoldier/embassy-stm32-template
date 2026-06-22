@@ -7,8 +7,10 @@ fn main() {
     println!("cargo:rustc-link-arg-bins=-Tdefmt.x");
 
     // Test targets (tests/*.rs)
-    // embedded-test.x (auto-added by embedded-test-linker-script) provides
-    // the full layout including chip-specific memory via INCLUDE memory.x.
+    // link.x provides the memory layout via INCLUDE memory.x.
+    // embedded-test.x provides test symbols (found via -L from embedded-test-linker-script).
     println!("cargo:rustc-link-arg-tests=--nmagic");
+    println!("cargo:rustc-link-arg-tests=-Tlink.x");
     println!("cargo:rustc-link-arg-tests=-Tdefmt.x");
+    println!("cargo:rustc-link-arg-tests=-Tembedded-test.x");
 }
