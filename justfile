@@ -21,11 +21,11 @@ rebuild-release: clean build-release
 
 # Build, flash & run (debug)
 run: build
-    probe-rs run --chip {{ "{{" }} mcu {{ "}}" }} --connect-under-reset {{ "{{" }} elf {{ "}}" }}
+    probe-rs run --chip {{ "{{" }} mcu {{ "}}" }} {{ "{{" }} elf {{ "}}" }}
 
 # Build, flash & run (release)
 run-release: build-release
-    probe-rs run --chip {{ "{{" }} mcu {{ "}}" }} --connect-under-reset {{ "{{" }} elf-release {{ "}}" }}
+    probe-rs run --chip {{ "{{" }} mcu {{ "}}" }} {{ "{{" }} elf-release {{ "}}" }}
 
 # Print binary size (debug)
 size: build
@@ -37,7 +37,7 @@ size-release: build-release
 
 # Erase flash memory
 erase:
-    probe-rs erase --chip {{ "{{" }} mcu {{ "}}" }} --connect-under-reset
+    probe-rs erase --chip {{ "{{" }} mcu {{ "}}" }}
 
 # Clean build artifacts
 clean:

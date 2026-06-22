@@ -35,7 +35,7 @@ A blinky project with everything wired up:
 | **Executor** | embassy-executor (thread mode) |
 | **HAL** | embassy-stm32 with `memory-x` auto-linking |
 | **Logging** | defmt + RTT (view with `probe-rs attach`) |
-| **Runner** | `cargo run` → `probe-rs run --connect-under-reset` |
+| **Runner** | `cargo run` → `probe-rs run` |
 | **Task runner** | `just run` / `just size` / `just erase` |
 
 ```
@@ -83,7 +83,7 @@ Or use standard cargo commands:
 
 ```bash
 cargo build
-cargo run            # probe-rs run --connect-under-reset
+cargo run            # probe-rs run
 cargo size
 ```
 
