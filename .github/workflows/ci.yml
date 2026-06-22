@@ -71,10 +71,10 @@ jobs:
         with:
           targets: ${{ matrix.target }}
 
-      - name: Install cargo-generate
+      - name: Install cargo-generate & flip-link
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-generate
+          tool: cargo-generate,flip-link
 
       - name: Generate project
         run: |

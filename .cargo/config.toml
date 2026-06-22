@@ -1,8 +1,6 @@
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
 runner = "probe-rs run --chip {{ probe-chip }}"
-
-# Alternatively, use `cargo embed` for RTT logging:
-# runner = "probe-rs run --chip {{ probe-chip }}"
+rustflags = ["-C", "linker=flip-link"]
 
 [build]
 target = "{{ rust-target }}"
