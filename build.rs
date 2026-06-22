@@ -7,10 +7,8 @@ fn main() {
     println!("cargo:rustc-link-arg-bins=-Tdefmt.x");
 
     // Test targets (tests/*.rs)
-    // Same linker chain as bins: memory.x defines regions, link.x places sections.
-    // embedded-test.x is auto-added by embedded-test-linker-script for test metadata.
+    // embedded-test.x (auto-added by embedded-test-linker-script) provides
+    // the full layout including chip-specific memory via INCLUDE memory.x.
     println!("cargo:rustc-link-arg-tests=--nmagic");
-    println!("cargo:rustc-link-arg-tests=-Tmemory.x");
-    println!("cargo:rustc-link-arg-tests=-Tlink.x");
     println!("cargo:rustc-link-arg-tests=-Tdefmt.x");
 }
