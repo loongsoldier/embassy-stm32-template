@@ -94,5 +94,8 @@ jobs:
       - name: cargo check (bin + tests)
         run: cd /tmp/ci-test && cargo check --tests
 
+      - name: cargo build (compile firmware)
+        run: cd /tmp/ci-test && cargo build
+
       - name: cargo test --no-run (compile test ELF)
         run: cd /tmp/ci-test && cargo test --no-run
