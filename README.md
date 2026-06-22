@@ -22,10 +22,7 @@ cd <project-name>
 just run
 ```
 
-> **Note:** This template uses `edition = "2024"` (Rust 1.85+). Install the required cross-compilation targets:
-> ```bash
-> rustup target add thumbv6m-none-eabi thumbv7m-none-eabi thumbv7em-none-eabihf thumbv8m.main-none-eabihf
-> ```
+> **Note:** The `rust-toolchain.toml` pins **stable** Rust with all Cortex-M targets pre-configured — just run `rustup update`.
 
 ## What you get
 
@@ -39,15 +36,15 @@ A blinky project with everything wired up:
 | **Stack protect** | flip-link (stack overflow → HardFault) |
 | **Runner** | `cargo run` → `probe-rs run` |
 | **Testing** | embedded-test + probe-rs (target hardware) |
-| **Task runner** | `just run` / `just test` / `just size` / `just erase` |
+| **Task runner** | `just run` / `just test` / `just bloat` / `just size` / `just erase` |
 
 ```
 my-project/
-├── .cargo/config.toml    # probe-rs runner, build target
+├── .cargo/config.toml    # probe-rs runner, flip-link, build target
 ├── Cargo.toml
-├── build.rs              # linker scripts (link.x, defmt.x)
-├── justfile              # just build / run / size / erase
-├── rust-toolchain.toml   # nightly + all Cortex-M targets
+├── build.rs              # linker scripts (bin + test targets)
+├── justfile              # just build / run / test / size / bloat / erase
+├── rust-toolchain.toml   # stable + all Cortex-M targets
 ├── src/
 │   └── main.rs           # blinky template
 ├── tests/
@@ -77,10 +74,12 @@ Dual-core H7 (`-cm4`/`-cm7` suffix) is supported but requires manual `critical-s
 ```bash
 just build          # compile firmware
 just run            # build + flash + run
-just test           # build + run tests on hardware
+just test           # build + run all tests
+just test-one NAME  # run a specific test
 just rebuild        # clean + build
 just size           # print Flash/RAM usage
 just bloat          # analyze binary size by crate
+just bloat-symbols  # analyze binary size by symbol
 just erase          # erase chip
 just clean          # cargo clean
 ```
@@ -92,7 +91,7 @@ cargo build
 cargo run            # probe-rs run
 cargo test           # probe-rs run (test mode)
 cargo size
-cargo bloat --release --crates -n 20
+cargo bloat --crates -n 20
 ```
 
 ## Testing on hardware
@@ -126,7 +125,7 @@ harness = false
 - **Clock config**: Replace `Default::default()` in `main.rs` with your RCC config
 - **Pin mapping**: Use embassy-stm32's GPIO API to configure peripherals
 - **Time driver**: Change `time-driver-any` to a specific timer (e.g. `time-driver-tim2`) for predictable interrupt priority
-- **Release optimizations**: `opt-level = 'z'` and `lto = true` are pre-configured
+- **Build optimizations**: `opt-level = 'z'` and `lto = true` for both dev and release
 
 ## License
 
