@@ -11,6 +11,9 @@ cargo install just
 cargo install probe-rs --features cli
 cargo install flip-link
 
+# Optional: USB DFU flashing (no debug probe needed)
+cargo install cargo-dfu
+
 # Generate project
 cargo generate --git https://github.com/loongsoldier/embassy-stm32-template
 ```
@@ -40,7 +43,7 @@ A blinky project with everything wired up:
 
 ```
 my-project/
-├── .cargo/config.toml    # probe-rs runner, flip-link, build target
+├── .cargo/config.toml    # probe-rs / DFU runner, flip-link, build target
 ├── Cargo.toml
 ├── build.rs              # linker scripts (bin + test targets)
 ├── justfile              # just build / run / test / size / bloat / erase
@@ -73,7 +76,8 @@ Dual-core H7 (`-cm4`/`-cm7` suffix) is supported but requires manual `critical-s
 
 ```bash
 just build          # compile firmware
-just run            # build + flash + run
+just run            # build + flash + run (probe-rs)
+just dfu            # build + flash via USB DFU
 just test           # build + run all tests
 just test-one NAME  # run a specific test
 just rebuild        # clean + build
@@ -89,6 +93,7 @@ Or use standard cargo commands:
 ```bash
 cargo build
 cargo run            # probe-rs run
+cargo dfu --chip stm32  # flash via USB DFU
 cargo test           # probe-rs run (test mode)
 cargo size
 cargo bloat --crates -n 20

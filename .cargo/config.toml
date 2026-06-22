@@ -2,6 +2,9 @@
 runner = "probe-rs run --chip {{ probe-chip }}"
 rustflags = ["-C", "linker=flip-link"]
 
+# Alternative: flash via USB DFU (no debug probe, chip must be in DFU mode)
+# runner = "cargo dfu"
+
 [build]
 target = "{{ rust-target }}"
 

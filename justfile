@@ -4,6 +4,9 @@ name := "{{ project-name }}"
 
 elf := justfile_directory() / "target" / target / "debug" / name
 
+# DFU chip family (derived from MCU, all STM32 chips use "stm32")
+dfu_chip := "stm32"
+
 # Build firmware
 build:
     cargo build
@@ -18,6 +21,10 @@ run: build
 # Print binary size
 size: build
     cargo size
+
+# Build, flash & run via USB DFU (chip must be in DFU mode)
+dfu: build
+    cargo dfu --chip {{ "{{" }} dfu_chip {{ "}}" }}
 
 # Erase flash memory
 erase:
