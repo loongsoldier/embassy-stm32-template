@@ -8,6 +8,9 @@ fn main() {
 
     // Test targets (tests/*.rs)
     // embedded-test.x replaces link.x (provided by embedded-test-linker-script crate)
+    // memory.x provides MEMORY regions (needed by flip-link for test ELFs too)
     println!("cargo:rustc-link-arg-tests=--nmagic");
+    println!("cargo:rustc-link-arg-tests=-Tmemory.x");
+    println!("cargo:rustc-link-arg-tests=-Tembedded-test.x");
     println!("cargo:rustc-link-arg-tests=-Tdefmt.x");
 }
