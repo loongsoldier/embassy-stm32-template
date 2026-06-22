@@ -3,37 +3,21 @@ target := "{{ rust-target }}"
 name := "{{ project-name }}"
 
 elf := justfile_directory() / "target" / target / "debug" / name
-elf-release := justfile_directory() / "target" / target / "release" / name
 
-# Build debug firmware
+# Build firmware
 build:
     cargo build
 
-# Clean & rebuild debug firmware
+# Clean & rebuild firmware
 rebuild: clean build
 
-# Build release firmware
-build-release:
-    cargo build --release
-
-# Clean & rebuild release firmware
-rebuild-release: clean build-release
-
-# Build, flash & run (debug)
+# Build, flash & run
 run: build
     probe-rs run --chip {{ "{{" }} mcu {{ "}}" }} {{ "{{" }} elf {{ "}}" }}
 
-# Build, flash & run (release)
-run-release: build-release
-    probe-rs run --chip {{ "{{" }} mcu {{ "}}" }} {{ "{{" }} elf-release {{ "}}" }}
-
-# Print binary size (debug)
+# Print binary size
 size: build
     cargo size
-
-# Print binary size (release)
-size-release: build-release
-    cargo size --release
 
 # Erase flash memory
 erase:
@@ -46,6 +30,14 @@ test:
 # Run a specific test by name
 test-one test_name:
     cargo test --test example_test -- {{ "{{" }} test_name {{ "}}" }}
+
+# Analyze binary size by crate (requires: cargo install cargo-bloat)
+bloat: build
+    cargo bloat --crates -n 20
+
+# Analyze binary size by symbol
+bloat-symbols: build
+    cargo bloat -n 20
 
 # Clean build artifacts
 clean:

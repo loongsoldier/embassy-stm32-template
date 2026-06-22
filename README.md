@@ -73,12 +73,12 @@ Dual-core H7 (`-cm4`/`-cm7` suffix) is supported but requires manual `critical-s
 ## Commands
 
 ```bash
-just build          # compile debug
-just run            # build + flash + run (debug)
-just run-release    # build + flash + run (release)
+just build          # compile firmware
+just run            # build + flash + run
 just test           # build + run tests on hardware
 just rebuild        # clean + build
 just size           # print Flash/RAM usage
+just bloat          # analyze binary size by crate
 just erase          # erase chip
 just clean          # cargo clean
 ```
@@ -90,6 +90,7 @@ cargo build
 cargo run            # probe-rs run
 cargo test           # probe-rs run (test mode)
 cargo size
+cargo bloat --release --crates -n 20
 ```
 
 ## Testing on hardware
