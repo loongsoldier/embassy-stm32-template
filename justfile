@@ -39,6 +39,14 @@ size-release: build-release
 erase:
     probe-rs erase --chip {{ "{{" }} mcu {{ "}}" }}
 
+# Run all tests (requires probe-rs + connected target)
+test:
+    cargo test
+
+# Run a specific test by name
+test-one test_name:
+    cargo test --test example_test -- {{ "{{" }} test_name {{ "}}" }}
+
 # Clean build artifacts
 clean:
     cargo clean

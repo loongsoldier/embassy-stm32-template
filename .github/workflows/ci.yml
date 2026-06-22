@@ -91,5 +91,8 @@ jobs:
           grep -n '{{' /tmp/ci-test/Cargo.toml && { echo "ERROR: unsubstituted placeholder"; exit 1; }
           echo "Generated project OK"
 
-      - name: cargo check
-        run: cd /tmp/ci-test && cargo check
+      - name: cargo check (bin + tests)
+        run: cd /tmp/ci-test && cargo check --tests
+
+      - name: cargo test --no-run (compile test ELF)
+        run: cd /tmp/ci-test && cargo test --no-run

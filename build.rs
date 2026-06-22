@@ -5,4 +5,9 @@ fn main() {
     println!("cargo:rustc-link-arg-bins=--nmagic");
     println!("cargo:rustc-link-arg-bins=-Tlink.x");
     println!("cargo:rustc-link-arg-bins=-Tdefmt.x");
+
+    // Test targets (tests/*.rs)
+    // embedded-test.x replaces link.x (provided by embedded-test-linker-script crate)
+    println!("cargo:rustc-link-arg-tests=--nmagic");
+    println!("cargo:rustc-link-arg-tests=-Tdefmt.x");
 }

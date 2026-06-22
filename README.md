@@ -36,7 +36,8 @@ A blinky project with everything wired up:
 | **HAL** | embassy-stm32 with `memory-x` auto-linking |
 | **Logging** | defmt + RTT (view with `probe-rs attach`) |
 | **Runner** | `cargo run` → `probe-rs run` |
-| **Task runner** | `just run` / `just size` / `just erase` |
+| **Testing** | embedded-test + probe-rs (target hardware) |
+| **Task runner** | `just run` / `just test` / `just size` / `just erase` |
 
 ```
 my-project/
@@ -47,6 +48,8 @@ my-project/
 ├── rust-toolchain.toml   # nightly + all Cortex-M targets
 ├── src/
 │   └── main.rs           # blinky template
+├── tests/
+│   └── example_test.rs   # on-target test example
 └── memory.x              # auto-generated (embassy-stm32 memory-x)
 ```
 
@@ -73,6 +76,7 @@ Dual-core H7 (`-cm4`/`-cm7` suffix) is supported but requires manual `critical-s
 just build          # compile debug
 just run            # build + flash + run (debug)
 just run-release    # build + flash + run (release)
+just test           # build + run tests on hardware
 just rebuild        # clean + build
 just size           # print Flash/RAM usage
 just erase          # erase chip
@@ -84,8 +88,35 @@ Or use standard cargo commands:
 ```bash
 cargo build
 cargo run            # probe-rs run
+cargo test           # probe-rs run (test mode)
 cargo size
 ```
+
+## Testing on hardware
+
+This template includes [embedded-test] for running tests directly on the target:
+
+```bash
+# Run all tests
+just test
+
+# Run a specific test
+just test-one my_test_name
+
+# Or with cargo directly
+cargo test
+cargo test --test example_test -- my_test_name
+```
+
+Each test runs in isolation — the chip is reset between tests. Add new test files in `tests/` and declare them in `Cargo.toml`:
+
+```toml
+[[test]]
+name = "my_test"
+harness = false
+```
+
+[embedded-test]: https://github.com/probe-rs/embedded-test
 
 ## Customizing for production
 
