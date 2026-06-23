@@ -128,7 +128,7 @@ harness = false
 - **Clock config**: Replace `Default::default()` in `main.rs` with your RCC config
 - **Pin mapping**: Use embassy-stm32's GPIO API to configure peripherals
 - **Time driver**: Change `time-driver-any` to a specific timer (e.g. `time-driver-tim2`) for predictable interrupt priority
-- **Build optimizations**: `opt-level = 'z'` and `lto = true` for both dev and release
+- **Build optimizations**: `opt-level = 'z'` for both profiles; dev uses `lto = "thin"` + incremental for fast iteration, release uses `lto = "fat"` for minimal size
 
 ## License
 

@@ -37,12 +37,22 @@ embedded-test = { version = "0.7", features = ["defmt", "embassy-010"] }
 name = "example_test"
 harness = false
 
-[profile.release]
-debug = 2
-lto = true
-opt-level = 'z'
-
 [profile.dev]
 debug = 2
-lto = true
+lto = "thin"
+codegen-units = 16
+incremental = true
 opt-level = 'z'
+overflow-checks = true
+debug-assertions = true
+panic = 'abort'
+
+[profile.release]
+debug = 0
+lto = "fat"
+codegen-units = 1
+incremental = false
+opt-level = 'z'
+overflow-checks = false
+debug-assertions = false
+panic = 'abort'
