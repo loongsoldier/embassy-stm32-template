@@ -37,20 +37,28 @@ A blinky project with everything wired up:
 | **Logging** | defmt + RTT (view with `probe-rs attach`) |
 | **Runner** | `cargo run` → `probe-rs run` |
 | **Testing** | embedded-test + probe-rs (target hardware) |
+| **Formatting** | `rustfmt.toml` with standard settings |
+| **Linting** | `.clippy.toml` (stack-size, complexity, embedded idents) |
+| **CI/CD** | GitHub Actions — build, fmt, clippy, test on every push/PR |
 | **Task runner** | `just run` / `just test` / `just bloat` / `just size` / `just erase` |
 
 ```
 my-project/
-├── .cargo/config.toml    # probe-rs / DFU runner, build target
+├── .cargo/config.toml      # probe-rs / DFU runner, build target
+├── .github/
+│   └── workflows/
+│       └── rust.yml         # CI: build, fmt, clippy, test
 ├── Cargo.toml
-├── build.rs              # linker scripts (bin + test targets)
-├── justfile              # just build / run / test / size / bloat / erase
-├── rust-toolchain.toml   # stable + all Cortex-M targets
+├── build.rs                 # linker scripts (bin + test targets)
+├── justfile                 # just build / run / test / size / bloat / erase
+├── rust-toolchain.toml      # stable + all Cortex-M targets + clippy/rust-src
+├── rustfmt.toml
+├── .clippy.toml
 ├── src/
-│   └── main.rs           # blinky template
+│   └── main.rs              # blinky template
 ├── tests/
-│   └── example_test.rs   # on-target test example
-└── memory.x              # auto-generated (embassy-stm32 memory-x)
+│   └── example_test.rs      # on-target test example
+└── memory.x                 # auto-generated (embassy-stm32 memory-x)
 ```
 
 ## Supported chips
