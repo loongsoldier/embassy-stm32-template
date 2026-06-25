@@ -1,0 +1,13 @@
+# Clippy configuration
+# See: https://doc.rust-lang.org/clippy/configuration.html
+
+msrv = "1.85"
+stack-size-threshold = 1024
+type-complexity-threshold = 500
+allow-mixed-uninlined-format-args = true
+
+doc-valid-idents = [
+    "GPIO", "SPI", "I2C", "UART", "USART", "DMA", "RCC", "NVIC",
+    "HAL", "RTOS", "RAM", "ROM", "FIFO", "DMA2D", "FMC", "SAI",
+    "..",
+]

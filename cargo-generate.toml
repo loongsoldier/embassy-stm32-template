@@ -5,10 +5,12 @@ ignore = [
     ".github",
     "README.md",
     "pre-script.rhai",
+    "post-script.rhai",
 ]
 
 [hooks]
 pre = ["pre-script.rhai"]
+post = ["post-script.rhai"]
 
 [placeholders.chip]
 type = "string"
