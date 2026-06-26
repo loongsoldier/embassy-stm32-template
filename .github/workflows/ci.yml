@@ -81,7 +81,7 @@ jobs:
           cargo generate --path . \
             --name ci-test \
             --define chip=${{ matrix.chip }} \
-            --silent \
+            --define license=MIT \
             --vcs none \
             --destination /tmp
 
