@@ -69,7 +69,17 @@ for name in licenses {
 }
 
 // Build SPDX expression for Cargo.toml (e.g. "MIT OR Apache-2.0").
-let spdx = spdx_list.join(" OR ");
+// Rhai arrays in cargo-generate do not support .join(), so build manually.
+let spdx = "";
+let first = true;
+for item in spdx_list {
+    if first {
+        spdx = item;
+        first = false;
+    } else {
+        spdx = spdx + " OR " + item;
+    }
+}
 variable::set("license-spdx", spdx);
 
 // File management: delete unselected license files; if single license
