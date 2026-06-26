@@ -84,9 +84,7 @@ variable::set("license-spdx", spdx);
 
 // File management: delete unselected license files; if single license
 // selected, rename its file to LICENSE.
-// NOTE: Avoid .values() — not supported in cargo-generate's Rhai.
-for key in display_to_spdx.keys() {
-    let spdx_id = display_to_spdx[key];
+for spdx_id in display_to_spdx.values() {
     let file_name = "LICENSE-" + spdx_id;
     if !file::exists(file_name) { continue; }
 
