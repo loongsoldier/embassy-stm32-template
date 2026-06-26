@@ -42,6 +42,52 @@ for prefix in target_by_prefix.keys() {
     }
 }
 
+// ── License handling ────────────────────────────────────────────────────
+// Map display names → SPDX identifiers, derive SPDX expression, and
+// manage license text files (all named LICENSE-{SPDX_ID}).
+
+let display_to_spdx = #{
+    "MIT": "MIT",
+    "Apache 2.0": "Apache-2.0",
+    "BSD 2-Clause": "BSD-2-Clause",
+    "BSD 3-Clause": "BSD-3-Clause",
+    "GPL 2.0": "GPL-2.0",
+    "GPL 3.0": "GPL-3.0",
+    "LGPL 2.1": "LGPL-2.1",
+    "LGPL 3.0": "LGPL-3.0",
+    "MPL 2.0": "MPL-2.0",
+    "AGPL 3.0": "AGPL-3.0",
+    "CC0 1.0": "CC0-1.0",
+};
+
+let licenses = variable::get("license");
+
+// Convert display names → SPDX identifiers.
+let spdx_list = [];
+for name in licenses {
+    spdx_list.push(display_to_spdx[name]);
+}
+
+// Build SPDX expression for Cargo.toml (e.g. "MIT OR Apache-2.0").
+let spdx = spdx_list.join(" OR ");
+variable::set("license-spdx", spdx);
+
+// File management: delete unselected license files; if single license
+// selected, rename its file to LICENSE.
+for spdx_id in display_to_spdx.values() {
+    let file_name = "LICENSE-" + spdx_id;
+    if !file::exists(file_name) { continue; }
+
+    if spdx_list.contains(spdx_id) {
+        if licenses.len() == 1 {
+            file::rename(file_name, "LICENSE");
+        }
+        // Multi-license: keep files as-is.
+    } else {
+        file::delete(file_name);
+    }
+}
+
 // ── Set template variables ──────────────────────────────────────────────
 variable::set("rust-target", rust_target);
 variable::set("probe-chip", chip_upper);
